@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="egovframework.example.welcomeWeb.service.impl.WelcomeWebMapper">
+	
+	<!-- 메인 조회 -->
+	<select id="selectWelcomeWebServiceList" resultType="egovMap">
+		SELECT ID,
+    		USER_NAME,
+    		AGE,
+    		COUNTRY,
+    		ETC
+		FROM welcome_web
+	</select>
+
+	<select id="selectPieChartList" resultType="egovMap">
+		SELECT ROUND(A.CNT/(SELECT count(*) TOTCNT 
+							FROM   welcome_web)*100) AS PERCENT
+			 , COUNTRY  
+		FROM (SELECT count(COUNTRY) as CNT, COUNTRY 
+				FROM welcome_web group by COUNTRY) A	
+	</select>
+	
+	<!-- 메인 조회(맵) -->
+	<select id="selectWelcomeWebMapList" parameterType="map" resultType="egovMap">
+		SELECT ID,
+    		USER_NAME,
+    		AGE,
+    		COUNTRY,
+    		ETC
+		FROM welcome_web
+		WHERE 1=1
+		<if test='AGE != null and AGE != ""'>
+			AND AGE = #{AGE}
+		</if>
+	</select>
+	
+	<!-- 메인 조회(String) -->
+	<select id="selectWelcomeWebStringList" parameterType="String" resultType="egovMap">
+		SELECT ID,
+    		USER_NAME,
+    		AGE,
+    		COUNTRY,
+    		ETC
+		FROM welcome_web
+		WHERE 1=1
+		<if test='_parameter != null and _parameter != ""'>
+			AND AGE = #{_parameter}
+		</if>
+	</select>
+	<!-- 메인 조회(VO) -->
+   <select id="selectWelcomeWebVOList" parameterType="WelcomeWebVO" resultType="egovMap">
+      SELECT ID,
+          USER_NAME,
+          AGE,
+          COUNTRY,
+          ETC
+      FROM welcome_web
+      WHERE 1=1
+      <if test='age != null and age != ""'>
+         AND AGE = #{age}
+      </if>
+   </select>
+</mapper>
